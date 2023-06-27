@@ -1,0 +1,11 @@
+---
+- hosts: group1
+  tasks:
+    - name: Install lldpad package
+      yum:
+        name: lldpad
+        state: latest
+    - name: check lldpad service status
+      service:
+        name: lldpad
+        state: started

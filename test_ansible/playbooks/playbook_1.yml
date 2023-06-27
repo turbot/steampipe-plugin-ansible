@@ -1,0 +1,28 @@
+---
+- name: Manage users and groups
+  hosts: all
+  tasks:
+    - name: Create group
+      group:
+        name: developers
+        state: present
+
+    - name: Create user
+      user:
+        name: john
+        group: developers
+        state: present
+        shell: /bin/bash
+        # password: "{{ 'password' | password_hash('sha512') }}"
+
+    - name: Remove user
+      user:
+        name: jane
+        state: absent
+
+    - name: Add user to sudoers
+      lineinfile:
+        dest: /etc/sudoers
+        line: "john ALL=(ALL) NOPASSWD:ALL"
+        state: present
+        validate: "visudo -cf %s"
