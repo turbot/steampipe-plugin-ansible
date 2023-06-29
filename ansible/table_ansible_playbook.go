@@ -13,7 +13,7 @@ import (
 func tableAnsiblePlaybook(ctx context.Context) *plugin.Table {
 	return &plugin.Table{
 		Name:        "ansible_playbook",
-		Description: "",
+		Description: "Ansible playbook",
 		List: &plugin.ListConfig{
 			ParentHydrate: resolveAnsibleConfigPaths,
 			Hydrate:       listAnsiblePlaybooks,
