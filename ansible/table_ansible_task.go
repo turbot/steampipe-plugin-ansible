@@ -14,7 +14,7 @@ import (
 func tableAnsibleTask(ctx context.Context) *plugin.Table {
 	return &plugin.Table{
 		Name:        "ansible_task",
-		Description: "",
+		Description: "Tasks defined in an Ansible playbook",
 		List: &plugin.ListConfig{
 			ParentHydrate: resolveAnsibleConfigPaths,
 			Hydrate:       listAnsibleTasks,
@@ -28,7 +28,7 @@ func tableAnsibleTask(ctx context.Context) *plugin.Table {
 			},
 			{
 				Name:        "playbook_name",
-				Description: "",
+				Description: "The name of the playbook where the task is defined.",
 				Type:        proto.ColumnType_STRING,
 			},
 			{
@@ -36,26 +36,33 @@ func tableAnsibleTask(ctx context.Context) *plugin.Table {
 				Description: "The nae of the playbook.",
 				Type:        proto.ColumnType_STRING,
 			},
+			// Can't use group as a column since it is a reserved word
 			{
-				Name:        "_group",
-				Description: "",
+				Name:        "task_group",
+				Description: "Specifies the group ownership of the task.",
 				Type:        proto.ColumnType_JSON,
 				Transform:   transform.FromField("Group"),
 			},
+			// Can't use user as a column since it is a reserved word
 			{
-				Name:        "_user",
-				Description: "",
+				Name:        "task_user",
+				Description: "Specifies the the user ownership for the task.",
 				Type:        proto.ColumnType_JSON,
 				Transform:   transform.FromField("User"),
 			},
 			{
 				Name:        "notify",
-				Description: "",
+				Description: "A list of handlers to notify when the task returns a 'changed=True' status.",
 				Type:        proto.ColumnType_JSON,
 			},
 			{
 				Name:        "vars",
 				Description: "The dictionary/map of variables.",
+				Type:        proto.ColumnType_JSON,
+			},
+			{
+				Name:        "tags",
+				Description: "A list of tags applied to the task or included tasks.",
 				Type:        proto.ColumnType_JSON,
 			},
 		},
@@ -75,6 +82,7 @@ type AnsibleTask struct {
 	User         interface{} `cty:"user"`
 	Notify       interface{} `cty:"notify"`
 	Vars         interface{} `cty:"vars"`
+	Tags         []string    `cty:"tags"`
 }
 
 func listAnsibleTasks(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {

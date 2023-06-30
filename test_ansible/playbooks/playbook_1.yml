@@ -1,11 +1,12 @@
 ---
 - name: Manage users and groups
-  hosts: all
+  hosts: localhost
   tasks:
     - name: Create group
       group:
         name: developers
         state: present
+      tags: ["create_group"]
 
     - name: Create user
       user:
@@ -13,12 +14,14 @@
         group: developers
         state: present
         shell: /bin/bash
-        # password: "{{ 'password' | password_hash('sha512') }}"
+        password: "{{ 'password' | password_hash('sha512') }}"
+      tags: ["create_user"]
 
     - name: Remove user
       user:
         name: jane
         state: absent
+      tags: ["remove_user"]
 
     - name: Add user to sudoers
       lineinfile:
@@ -26,3 +29,4 @@
         line: "john ALL=(ALL) NOPASSWD:ALL"
         state: present
         validate: "visudo -cf %s"
+      tags: ["add_user_to_sudoers"]

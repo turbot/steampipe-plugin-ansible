@@ -30,10 +30,12 @@ func tableAnsiblePlaybook(ctx context.Context) *plugin.Table {
 				Description: "A list of groups, hosts or host pattern that translates into a list of hosts that are the play's target.",
 				Type:        proto.ColumnType_STRING,
 			},
+
+			// Become directives
 			{
 				Name:        "become",
-				Description: "Controls if privilege escalation is used or not on Task execution.",
-				Type:        proto.ColumnType_STRING,
+				Description: "Controls if privilege escalation is used or not on task execution. If true, privilege escalation is activated.",
+				Type:        proto.ColumnType_BOOL,
 			},
 			{
 				Name:        "become_user",
@@ -41,13 +43,42 @@ func tableAnsiblePlaybook(ctx context.Context) *plugin.Table {
 				Type:        proto.ColumnType_STRING,
 			},
 			{
-				Name:        "tasks",
-				Description: "The list of tasks to execute in the play.",
+				Name:        "become_flags",
+				Description: "A string of flag(s) to pass to the privilege escalation program when become is true.",
+				Type:        proto.ColumnType_STRING,
+			},
+			{
+				Name:        "become_method",
+				Description: "Specifies which method of privilege escalation to use (such as sudo or su).",
+				Type:        proto.ColumnType_STRING,
+			},
+			//
+
+			{
+				Name:        "check_mode",
+				Description: "A boolean that controls if a task is executed in 'check' mode.",
+				Type:        proto.ColumnType_BOOL,
+			},
+			{
+				Name:        "debugger",
+				Description: "Enable debugging tasks based on state of the task result. Allowed values are: always, never, on_failed, on_unreachable, on_skipped.",
+				Type:        proto.ColumnType_STRING,
+			},
+			{
+				Name:        "diff",
+				Description: "Toggle to make tasks return ‘diff’ information or not.",
+				Type:        proto.ColumnType_BOOL,
+			},
+
+			// JSON columns
+			{
+				Name:        "collections",
+				Description: "A section with tasks that are treated as handlers, these won't get executed normally, only when notified after each section of tasks is complete.",
 				Type:        proto.ColumnType_JSON,
 			},
 			{
-				Name:        "vars",
-				Description: "The dictionary/map of variables.",
+				Name:        "tasks",
+				Description: "The list of tasks to execute in the play.",
 				Type:        proto.ColumnType_JSON,
 			},
 			{
@@ -55,6 +86,24 @@ func tableAnsiblePlaybook(ctx context.Context) *plugin.Table {
 				Description: "A section with tasks that are treated as handlers, these won't get executed normally, only when notified after each section of tasks is complete.",
 				Type:        proto.ColumnType_JSON,
 			},
+
+			// variables
+			{
+				Name:        "vars",
+				Description: "The dictionary/map of variables.",
+				Type:        proto.ColumnType_JSON,
+			},
+			{
+				Name:        "vars_files",
+				Description: "A list of files that contain vars to include in the play.",
+				Type:        proto.ColumnType_JSON,
+			},
+			{
+				Name:        "vars_prompt",
+				Description: "A list of variables to prompt for.",
+				Type:        proto.ColumnType_JSON,
+			},
+			//
 			{
 				Name:        "path",
 				Description: "Path to the file.",
@@ -65,14 +114,22 @@ func tableAnsiblePlaybook(ctx context.Context) *plugin.Table {
 }
 
 type AnsiblePlaybookInfo struct {
-	Path       string      `cty:"-"`
-	Name       string      `cty:"name"`
-	Hosts      string      `cty:"hosts"`
-	Tasks      interface{} `cty:"tasks"`
-	Vars       interface{} `cty:"vars"`
-	Handlers   interface{} `cty:"handlers"`
-	Become     string      `cty:"become"`
-	BecomeUser string      `cty:"become_user"`
+	Become       bool        `cty:"become"`
+	BecomeFlags  string      `cty:"become_flags"`
+	BecomeMethod string      `cty:"become_method"`
+	BecomeUser   string      `cty:"become_user"`
+	CheckMode    bool        `cty:"check_mode"`
+	Collections  interface{} `cty:"collections"`
+	Debugger     string      `cty:"debugger"`
+	Diff         bool        `cty:"diff"`
+	Handlers     interface{} `cty:"handlers"`
+	Hosts        string      `cty:"hosts"`
+	Name         string      `cty:"name"`
+	Path         string      `cty:"-"`
+	Tasks        interface{} `cty:"tasks"`
+	Vars         interface{} `cty:"vars"`
+	VarsFiles    interface{} `cty:"vars_files"`
+	VarsPrompt   interface{} `cty:"vars_prompt"`
 }
 
 func listAnsiblePlaybooks(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
