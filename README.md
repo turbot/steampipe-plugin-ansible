@@ -2,7 +2,7 @@
 
 # Ansible Plugin for Steampipe
 
-Use SQL to query data from Ansible playbook files.
+Use SQL to query configurations from the Ansible playbooks.
 
 - **[Get started →](https://hub.steampipe.io/plugins/turbot/ansible)**
 - Documentation: [Table definitions & examples](https://hub.steampipe.io/plugins/turbot/ansible/tables)
