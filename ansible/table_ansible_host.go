@@ -9,12 +9,16 @@ import (
 	"github.com/turbot/steampipe-plugin-sdk/v5/plugin/transform"
 )
 
+//// TABLE DEFINITION
+
 func tableAnsibleHost(ctx context.Context) *plugin.Table {
 	return &plugin.Table{
 		Name:        "ansible_host",
 		Description: "Host refers to a specific machine or device that Ansible can manage and operate on",
 		List: &plugin.ListConfig{
-			Hydrate: listAnsibleHosts,
+			ParentHydrate: resolveAnsibleInventoryFilePaths,
+			Hydrate:       listAnsibleHosts,
+			KeyColumns:    plugin.OptionalColumns([]string{"path"}),
 		},
 		Columns: []*plugin.Column{
 			{
@@ -40,18 +44,27 @@ func tableAnsibleHost(ctx context.Context) *plugin.Table {
 				Description: "A list of groups where the host is located.",
 				Type:        proto.ColumnType_JSON,
 			},
+			{
+				Name:        "path",
+				Description: "Path to the file.",
+				Type:        proto.ColumnType_STRING,
+			},
 		},
 	}
 }
 
 type AnsibleHostInfo struct {
-	Host   *aini.Host
 	Groups []string
+	Host   *aini.Host
+	Path   string
 }
 
+//// LIST FUNCTION
+
 func listAnsibleHosts(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
-	// TODO: change the path to use paths given in the config
-	path := "test_ansible/inventories/parentChild1"
+	// The path comes from a parent hydrate, defaulting to the config paths or
+	// available by the optional key column
+	path := h.Item.(filePath).Path
 
 	data, err := aini.ParseFile(path)
 	if err != nil {
@@ -67,8 +80,9 @@ func listAnsibleHosts(ctx context.Context, d *plugin.QueryData, h *plugin.Hydrat
 		}
 
 		d.StreamListItem(ctx, AnsibleHostInfo{
-			Host:   host,
 			Groups: groups,
+			Host:   host,
+			Path:   path,
 		})
 	}
 

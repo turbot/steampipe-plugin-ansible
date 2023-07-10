@@ -17,7 +17,7 @@ func tableAnsiblePlaybook(ctx context.Context) *plugin.Table {
 		Name:        "ansible_playbook",
 		Description: "Ansible playbook",
 		List: &plugin.ListConfig{
-			ParentHydrate: resolveAnsibleConfigPaths,
+			ParentHydrate: resolveAnsiblePlaybookFilePaths,
 			Hydrate:       listAnsiblePlaybooks,
 			KeyColumns:    plugin.OptionalColumns([]string{"path"}),
 		},

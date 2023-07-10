@@ -9,12 +9,16 @@ import (
 	"github.com/turbot/steampipe-plugin-sdk/v5/plugin/transform"
 )
 
+//// TABLE DEFINITION
+
 func tableAnsibleGroup(ctx context.Context) *plugin.Table {
 	return &plugin.Table{
 		Name:        "ansible_group",
 		Description: "Lists logical grouping of hosts",
 		List: &plugin.ListConfig{
-			Hydrate: listAnsibleGroups,
+			ParentHydrate: resolveAnsibleInventoryFilePaths,
+			Hydrate:       listAnsibleGroups,
+			KeyColumns:    plugin.OptionalColumns([]string{"path"}),
 		},
 		Columns: []*plugin.Column{
 			{
@@ -44,20 +48,29 @@ func tableAnsibleGroup(ctx context.Context) *plugin.Table {
 				Type:        proto.ColumnType_JSON,
 				Transform:   transform.FromField("Group.Vars"),
 			},
+			{
+				Name:        "path",
+				Description: "Path to the file.",
+				Type:        proto.ColumnType_STRING,
+			},
 		},
 	}
 }
 
 type AnsibleGroupInfo struct {
-	Group    *aini.Group
-	Parents  []string
 	Children []string
+	Group    *aini.Group
 	Hosts    []string
+	Parents  []string
+	Path     string
 }
 
+//// LIST FUNCTION
+
 func listAnsibleGroups(ctx context.Context, d *plugin.QueryData, h *plugin.HydrateData) (interface{}, error) {
-	// TODO: change the path to use paths given in the config
-	path := "test_ansible/inventories/parentChild1"
+	// The path comes from a parent hydrate, defaulting to the config paths or
+	// available by the optional key column
+	path := h.Item.(filePath).Path
 
 	data, err := aini.ParseFile(path)
 	if err != nil {
@@ -65,7 +78,7 @@ func listAnsibleGroups(ctx context.Context, d *plugin.QueryData, h *plugin.Hydra
 		return nil, err
 	}
 
-	// Even if you do not define any groups in your inventory file, Ansible creates two default groups: all and ungrouped . The all group contains every host. The ungrouped group contains all hosts that don't have another group aside from all .
+	// Even if you do not define any groups in your inventory file, Ansible creates two default groups: all and ungrouped. The all group contains every host. The ungrouped group contains all hosts that don't have another group aside from all.
 
 	// Stream the data
 	for _, group := range data.Groups {
@@ -84,10 +97,11 @@ func listAnsibleGroups(ctx context.Context, d *plugin.QueryData, h *plugin.Hydra
 		}
 
 		d.StreamListItem(ctx, AnsibleGroupInfo{
-			Group:    group,
-			Parents:  parents,
 			Children: children,
+			Group:    group,
 			Hosts:    hosts,
+			Parents:  parents,
+			Path:     path,
 		})
 	}
 

@@ -1,8 +1,12 @@
 connection "ansible" {
   plugin = "ansible"
 
-  # Paths is a list of locations to search for Ansible playbook files
-  # Paths can be configured with a local directory, a remote Git repository URL, or an S3 bucket URL
+  # The plugin supports parsing both Ansible playbook files as well as inventory files.
+  # For example:
+  #   - To parse the Ansible playbook files, use `playbook_file_paths` argument to configure it.
+  #   - Similarly, to parse the Ansible inventory files, use `inventory_file_paths`.
+
+  # The above paths can be configured with a local directory, a remote Git repository URL, or an S3 bucket URL
   # Wildcard based searches are supported, including recursive searches
   # Local paths are resolved relative to the current working directory (CWD)
 
@@ -18,5 +22,6 @@ connection "ansible" {
   # the CWD will be matched, which may cause errors if incompatible file types exist
 
   # Defaults to CWD
-  paths = [ "*.yml", "*.yaml" ]
+  playbook_file_paths  = [ "*.yml", "*.yaml" ]
+  inventory_file_paths = [ "/etc/ansible/hosts", "~/.ansible/hosts" ]
 }

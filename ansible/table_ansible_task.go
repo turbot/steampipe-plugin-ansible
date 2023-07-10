@@ -18,7 +18,7 @@ func tableAnsibleTask(ctx context.Context) *plugin.Table {
 		Name:        "ansible_task",
 		Description: "Tasks defined in an Ansible playbook",
 		List: &plugin.ListConfig{
-			ParentHydrate: resolveAnsibleConfigPaths,
+			ParentHydrate: resolveAnsiblePlaybookFilePaths,
 			Hydrate:       listAnsibleTasks,
 			KeyColumns:    plugin.OptionalColumns([]string{"path"}),
 		},

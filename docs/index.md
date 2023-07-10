@@ -78,8 +78,12 @@ Installing the latest ansible plugin will create a config file (`~/.steampipe/co
 connection "ansible" {
   plugin = "ansible"
 
-  # Paths is a list of locations to search for Ansible playbook files
-  # Paths can be configured with a local directory, a remote Git repository URL, or an S3 bucket URL
+  # The plugin supports parsing both Ansible playbook files as well as inventory files.
+  # For example:
+  #   - To parse the Ansible playbook files, use `playbook_file_paths` argument to configure it.
+  #   - Similarly, to parse the Ansible inventory files, use `inventory_file_paths`.
+
+  # The above paths can be configured with a local directory, a remote Git repository URL, or an S3 bucket URL
   # Wildcard based searches are supported, including recursive searches
   # Local paths are resolved relative to the current working directory (CWD)
 
@@ -95,7 +99,8 @@ connection "ansible" {
   # the CWD will be matched, which may cause errors if incompatible file types exist
 
   # Defaults to CWD
-  paths = [ "*.yml", "*.yaml" ]
+  playbook_file_paths  = [ "*.yml", "*.yaml" ]
+  inventory_file_paths = [ "/etc/ansible/hosts", "~/.ansible/hosts" ]
 }
 ```
 
@@ -115,7 +120,7 @@ Paths may [include wildcards](https://pkg.go.dev/path/filepath#Match) and suppor
 connection "ansible" {
   plugin = "ansible"
 
-  paths = [
+  playbook_file_paths = [
     "*.yml",
     "~/*.yaml",
     "github.com/ansible-community/molecule//playbooks//*.yaml",
@@ -143,7 +148,7 @@ You can define a list of local directory paths to search for Ansible playbook fi
 connection "ansible" {
   plugin = "ansible"
 
-  paths = [ "*.yml", "*.yaml", "/path/to/dir/playbook.yaml" ]
+  playbook_file_paths = [ "*.yml", "*.yaml", "/path/to/dir/playbook.yaml" ]
 }
 ```
 
@@ -162,7 +167,7 @@ You can specify a subdirectory after a double-slash (`//`) if you want to downlo
 connection "ansible" {
   plugin = "ansible"
 
-  paths = [
+  playbook_file_paths = [
     "github.com/ansible-community/molecule//playbooks//*.yaml"
   ]
 }
@@ -188,7 +193,7 @@ You can also authenticate your request by setting the AWS profile and region in 
 connection "ansible" {
   plugin = "ansible"
 
-  paths = [
+  playbook_file_paths = [
     "s3::https://bucket-2.s3.us-east-1.amazonaws.com//*.json?aws_profile=<AWS_PROFILE>",
     "s3::https://bucket-2.s3.us-east-1.amazonaws.com/test_folder//*.yaml?aws_profile=<AWS_PROFILE>"
   ]
@@ -232,7 +237,7 @@ You can query any public S3 bucket directly using the URL without passing creden
 connection "ansible" {
   plugin = "ansible"
 
-  paths = [
+  playbook_file_paths = [
     "s3::https://bucket-1.s3.us-east-1.amazonaws.com/test_folder//*.json",
     "s3::https://bucket-2.s3.us-east-1.amazonaws.com/test_folder//**/*.yaml"
   ]
