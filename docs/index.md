@@ -16,6 +16,8 @@ og_image: "/images/plugins/turbot/ansible-social-graphic.png"
 
 [Steampipe](https://steampipe.io) is an open source CLI to instantly query data using SQL.
 
+The Ansible plugin makes it simpler to query the configured Ansible playbook files, and the various tasks defined in it. Apart from scanning the playbook files, the plugin also supports scanning the Ansible inventory files from different sources.
+
 Query all playbooks that use privilege escalation:
 
 ```sql
@@ -56,7 +58,7 @@ where
 
 - **[Table definitions & examples →](/plugins/turbot/ansible/tables)**
 
-## Quick start
+## Get Started
 
 ### Install
 
@@ -104,15 +106,14 @@ connection "ansible" {
 }
 ```
 
-### Supported Path Formats
+## Configuring File Paths
 
-The `paths` config argument is flexible and can search for Ansible playbook files from several different sources, e.g., local directory paths, Git, S3.
+The plugin supports scanning both Ansible playbook files and the inventory files. For scanning the files, configure the plugin config file with the desired file paths. For example:
 
-The following sources are supported:
+- For scanning the Ansible playbook files, use `playbook_file_paths` argument to configure it.
+- Similarly, to scan the Ansible inventory files, use `inventory_file_paths`.
 
-- [Local files](#configuring-local-file-paths)
-- [Remote Git repositories](#configuring-remote-git-repository-urls)
-- [S3](#configuring-s3-urls)
+Both `playbook_file_paths` and `inventory_file_paths` config arguments are flexible and can search for Ansible playbook files from various sources (e.g., [Local files](#configuring-local-file-paths), [Git](#configuring-remote-git-repository-urls), [S3](#configuring-s3-urls) etc.).
 
 Paths may [include wildcards](https://pkg.go.dev/path/filepath#Match) and support `**` for recursive matching. For example:
 
@@ -126,12 +127,14 @@ connection "ansible" {
     "github.com/ansible-community/molecule//playbooks//*.yaml",
     "s3::https://bucket.s3.us-east-1.amazonaws.com/test_folder//*.yaml"
   ]
+
+  inventory_file_paths = ["*.ini", "~/*.ini"]
 }
 ```
 
 **Note**: If any path matches on `*` without `.yml` or `.yaml`, all files (including non-Ansible playbook files) in the directory will be matched, which may cause errors if incompatible file types exist.
 
-#### Configuring Local File Paths
+### Configuring Local File Paths
 
 You can define a list of local directory paths to search for Ansible playbook files. Paths are resolved relative to the current working directory. For example:
 
@@ -152,7 +155,7 @@ connection "ansible" {
 }
 ```
 
-#### Configuring Remote Git Repository URLs
+### Configuring Remote Git Repository URLs
 
 You can also configure `paths` with any Git remote repository URLs, e.g., GitHub, BitBucket, GitLab. The plugin will then attempt to retrieve any Ansible playbook files from the remote repositories.
 
@@ -167,19 +170,17 @@ You can specify a subdirectory after a double-slash (`//`) if you want to downlo
 connection "ansible" {
   plugin = "ansible"
 
-  playbook_file_paths = [
-    "github.com/ansible-community/molecule//playbooks//*.yaml"
-  ]
+  playbook_file_paths = ["github.com/ansible-community/molecule//playbooks//*.yaml"]
 }
 ```
 
 Similarly, you can define a list of GitLab and BitBucket URLs to search for Ansible playbook files.
 
-#### Configuring S3 URLs
+### Configuring S3 URLs
 
 You can also query all Ansible playbook files stored inside an S3 bucket (public or private) using the bucket URL.
 
-##### Accessing a Private Bucket
+#### Accessing a Private Bucket
 
 In order to access your files in a private S3 bucket, you will need to configure your credentials. You can use your configured AWS profile from local `~/.aws/config`, or pass the credentials using the standard AWS environment variables, e.g., `AWS_PROFILE`, `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_REGION`.
 
@@ -227,7 +228,7 @@ If the bucket is in another AWS account, the bucket policy will need to grant ac
 }
 ```
 
-##### Accessing a Public Bucket
+#### Accessing a Public Bucket
 
 Public access granted to buckets and objects through ACLs and bucket policies allows any user access to data in the bucket. We do not recommend making S3 buckets public, but if there are specific objects you'd like to make public, please see [How can I grant public read access to some objects in my Amazon S3 bucket?](https://aws.amazon.com/premiumsupport/knowledge-center/read-access-objects-s3-bucket/).
 
