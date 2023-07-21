@@ -24,7 +24,7 @@ func tableAnsiblePlaybook(ctx context.Context) *plugin.Table {
 		Columns: []*plugin.Column{
 			{
 				Name:        "name",
-				Description: "The nae of the playbook.",
+				Description: "The name of the playbook.",
 				Type:        proto.ColumnType_STRING,
 			},
 			{
@@ -54,8 +54,6 @@ func tableAnsiblePlaybook(ctx context.Context) *plugin.Table {
 				Description: "Specifies which method of privilege escalation to use (such as sudo or su).",
 				Type:        proto.ColumnType_STRING,
 			},
-			//
-
 			{
 				Name:        "check_mode",
 				Description: "A boolean that controls if a task is executed in 'check' mode.",
@@ -192,7 +190,7 @@ func tableAnsiblePlaybook(ctx context.Context) *plugin.Table {
 			// variables
 			{
 				Name:        "vars",
-				Description: "The dictionary/map of variables.",
+				Description: "The dictionary or map of variables.",
 				Type:        proto.ColumnType_JSON,
 			},
 			{
@@ -205,7 +203,6 @@ func tableAnsiblePlaybook(ctx context.Context) *plugin.Table {
 				Description: "A list of variables to prompt for.",
 				Type:        proto.ColumnType_JSON,
 			},
-			//
 			{
 				Name:        "path",
 				Description: "Path to the file.",

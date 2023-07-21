@@ -11,13 +11,27 @@ Use SQL to query configurations from the Ansible playbooks.
 
 ## Quick start
 
-Install the plugin with [Steampipe](https://steampipe.io):
+### Install
 
-```shell
+Download and install the latest Ansible plugin:
+
+```bash
 steampipe plugin install ansible
 ```
 
-Configure your [config file](https://hub.steampipe.io/plugins/turbot/ansible#configuration) to include directories with Ansible playbook files. If no directory is specified, the current working directory will be used.
+Configure your [config file](https://hub.steampipe.io/plugins/turbot/ansible#configuration).
+
+Configure your file paths in `~/.steampipe/config/ansible.spc`:
+
+```hcl
+connection "ansible" {
+  plugin = "ansible"
+
+  # Defaults to CWD
+  playbook_file_paths  = [ "*.yml", "*.yaml" ]
+  inventory_file_paths = [ "/etc/ansible/hosts", "~/.ansible/hosts" ]
+}
+```
 
 Run steampipe:
 
@@ -25,7 +39,7 @@ Run steampipe:
 steampipe query
 ```
 
-Query all playbooks that use privilege escalation:
+List all playbooks that use privilege escalation:
 
 ```sql
 select

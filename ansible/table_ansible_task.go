@@ -35,7 +35,7 @@ func tableAnsibleTask(ctx context.Context) *plugin.Table {
 			},
 			{
 				Name:        "name",
-				Description: "The nae of the playbook.",
+				Description: "The name of the playbook.",
 				Type:        proto.ColumnType_STRING,
 			},
 			{
@@ -70,8 +70,6 @@ func tableAnsibleTask(ctx context.Context) *plugin.Table {
 				Description: "Specifies which method of privilege escalation to use (such as sudo or su).",
 				Type:        proto.ColumnType_STRING,
 			},
-			//
-
 			{
 				Name:        "changed_when",
 				Description: "Conditional expression that overrides the task's normal 'changed' status.",
@@ -192,7 +190,6 @@ func tableAnsibleTask(ctx context.Context) *plugin.Table {
 				Description: "Conditional expression, determines if an iteration of a task is run or not.",
 				Type:        proto.ColumnType_STRING,
 			},
-
 			// JSON columns
 			{
 				Name:        "collections",
@@ -219,14 +216,14 @@ func tableAnsibleTask(ctx context.Context) *plugin.Table {
 				Description: "A list of tags applied to the task or included tasks.",
 				Type:        proto.ColumnType_JSON,
 			},
-			// Can't use group as a column since it is a reserved word
+			// Can't use 'group' as a column since it is a reserved word
 			{
 				Name:        "task_group",
 				Description: "Specifies the group ownership of the task.",
 				Type:        proto.ColumnType_JSON,
 				Transform:   transform.FromField("Group"),
 			},
-			// Can't use user as a column since it is a reserved word
+			// Can't use 'user' as a column since it is a reserved word
 			{
 				Name:        "task_user",
 				Description: "Specifies the the user ownership for the task.",

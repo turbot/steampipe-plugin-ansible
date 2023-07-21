@@ -18,7 +18,7 @@ og_image: "/images/plugins/turbot/ansible-social-graphic.png"
 
 The Ansible plugin makes it simpler to query the configured Ansible playbook files, and the various tasks defined in it. Apart from scanning the playbook files, the plugin also supports scanning the Ansible inventory files from different sources.
 
-Query all playbooks that use privilege escalation:
+List all playbooks that use privilege escalation:
 
 ```sql
 select
@@ -58,13 +58,13 @@ where
 
 - **[Table definitions & examples →](/plugins/turbot/ansible/tables)**
 
-## Get Started
+## Quick start
 
 ### Install
 
 Download and install the latest Ansible plugin:
 
-```bash
+```sh
 steampipe plugin install ansible
 ```
 
@@ -75,6 +75,8 @@ No credentials are required.
 ### Configuration
 
 Installing the latest ansible plugin will create a config file (`~/.steampipe/config/ansible.spc`) with a single connection named `ansible`:
+
+Configure your file paths in `~/.steampipe/config/ansible.spc`:
 
 ```hcl
 connection "ansible" {
@@ -111,7 +113,7 @@ connection "ansible" {
 The plugin supports scanning both Ansible playbook files and the inventory files. For scanning the files, configure the plugin config file with the desired file paths. For example:
 
 - For scanning the Ansible playbook files, use `playbook_file_paths` argument to configure it.
-- Similarly, to scan the Ansible inventory files, use `inventory_file_paths`.
+- For scanning the Ansible inventory files, use `inventory_file_paths` argument to configure it.
 
 Both `playbook_file_paths` and `inventory_file_paths` config arguments are flexible and can search for Ansible playbook files from various sources (e.g., [Local files](#configuring-local-file-paths), [Git](#configuring-remote-git-repository-urls), [S3](#configuring-s3-urls) etc.).
 
@@ -132,7 +134,7 @@ connection "ansible" {
 }
 ```
 
-**Note**: If any path matches on `*` without `.yml` or `.yaml`, all files (including non-Ansible playbook files) in the directory will be matched, which may cause errors if incompatible file types exist.
+**Note**: If any path matches on `*` with `.yml` or `.yaml`, all files (including non-Ansible playbook files) in the directory will be matched, which may cause errors if incompatible file types exist.
 
 ### Configuring Local File Paths
 
