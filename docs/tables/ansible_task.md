@@ -1,10 +1,8 @@
 # Table: ansible_task
 
-Ansible Playbooks offer a repeatable, re-usable, simple configuration management and multi-machine deployment system, one that is well suited to deploying complex applications.
+A task is the smallest unit of action you can automate using an Ansible playbook. Playbooks typically contain a series of tasks that serve a goal, such as to set up a web server, or to deploy an application to remote environments. Ansible executes tasks in the same order they are defined inside a playbook.
 
-A playbook is composed of one or more `plays` in an ordered list. Each play executes part of the overall goal of the playbook, running one or more tasks. Each task calls an Ansible module.
-
-Playbooks are expressed in YAML format with a minimum of syntax. The table `ansible_playbook` reads all the plays defined in a configured YAML files, and showcase the data in a table format.
+The table `ansible_task` lists all the tasks defined inside a playbook.
 
 ## Examples
 
