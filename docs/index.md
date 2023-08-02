@@ -84,8 +84,8 @@ connection "ansible" {
 
   # The plugin supports parsing both Ansible playbook files as well as inventory files.
   # For example:
-  #   - To parse the Ansible playbook files, use `playbook_file_paths` argument to configure it.
-  #   - Similarly, to parse the Ansible inventory files, use `inventory_file_paths`.
+  #  - To parse the Ansible playbook files, use `playbook_file_paths` argument to configure it.
+  #  - Similarly, to parse the Ansible inventory files, use `inventory_file_paths`.
 
   # The above paths can be configured with a local directory, a remote Git repository URL, or an S3 bucket URL
   # Wildcard based searches are supported, including recursive searches

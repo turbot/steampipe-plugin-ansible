@@ -18,7 +18,7 @@ connection "ansible" {
   #  - "/path/to/dir/*.yml" matches all Ansible playbook files in a specific directory
   #  - "/path/to/dir/main.yml" matches a specific file
 
-  # If paths includes "*", all files (including non-Ansible playbook files) in
+  # If paths include "*", all files (including non-Ansible playbook files) in
   # the CWD will be matched, which may cause errors if incompatible file types exist
 
   # Defaults to CWD

@@ -34,7 +34,7 @@ southwest
 northwest
 ```
 
-and the query is:
+Query to retrieve the groups:
 
 ```sql
 select
@@ -118,7 +118,7 @@ where
   hosts is not null;
 ```
 
-### List group with no children
+### List groups with no children
 
 ```sql
 select

@@ -40,7 +40,7 @@ southwest
 northwest
 ```
 
-and the query is:
+Query to retrieve the hosts:
 
 ```sql
 select
