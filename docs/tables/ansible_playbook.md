@@ -1,14 +1,20 @@
-# Table: ansible_playbook
+---
+title: "Steampipe Table: ansible_playbook - Query Ansible Playbooks using SQL"
+description: "Allows users to query Ansible Playbooks, specifically the details of each playbook, providing insights into the automation scripts and potential issues."
+---
 
-Ansible Playbooks offer a repeatable, re-usable, simple configuration management and multi-machine deployment system, one that is well suited to deploying complex applications.
+# Table: ansible_playbook - Query Ansible Playbooks using SQL
 
-A playbook is composed of one or more `plays` in an ordered list. Each play executes part of the overall goal of the playbook, running one or more tasks. Each task calls an Ansible module.
+Ansible Playbook is a set of instructions that Ansible will execute on the target host or hosts. It is the primary mechanism for system configuration management in Ansible and is written in YAML. Playbooks can declare configurations, orchestrate steps of any manual ordered process, and even interact with other tools and services.
 
-Playbooks are expressed in YAML format with a minimum of syntax. The table `ansible_playbook` reads all the plays defined in a configured YAML files, and showcase the data in a table format.
+## Table Usage Guide
+
+The `ansible_playbook` table provides insights into playbooks within Ansible. As a DevOps engineer, explore playbook-specific details through this table, including the tasks, handlers, and associated metadata. Utilize it to uncover information about playbooks, such as those with errors, the sequence of tasks, and the verification of handlers.
 
 ## Examples
 
 ### Retrieve all playbooks
+Explore which playbooks are available in your Ansible configuration. This allows you to gain insights into the tasks, variables, and hosts associated with each playbook, and understand their respective paths.
 
 ```sql
 select
@@ -22,6 +28,7 @@ from
 ```
 
 ### List playbooks targeting specific hosts
+Explore which ansible playbooks are specifically targeting your web servers. This can help you manage and optimize the deployment of updates or changes across your server infrastructure.
 
 ```sql
 select
@@ -37,6 +44,7 @@ where
 ```
 
 ### List playbooks that use privilege escalation
+Explore which Ansible playbooks are using privilege escalation. This can be helpful to assess security practices and identify potential areas of risk in your infrastructure setup.
 
 ```sql
 select
@@ -52,6 +60,7 @@ where
 ```
 
 ### List playbooks with no handlers
+Explore which Ansible playbooks lack handlers, providing a way to identify potential areas for adding error or event handling to improve playbook robustness and reliability.
 
 ```sql
 select
@@ -67,6 +76,7 @@ where
 ```
 
 ### List playbooks that use `root` privilege
+Explore which playbooks are utilizing root privileges. This can be beneficial to identify potential security risks and ensure best practices are adhered to.
 
 ```sql
 select

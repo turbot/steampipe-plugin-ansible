@@ -1,11 +1,20 @@
-# Table: ansible_group
+---
+title: "Steampipe Table: ansible_group - Query Ansible Groups using SQL"
+description: "Allows users to query Ansible Groups, specifically the group details and associated hosts, providing insights into the configuration and management of Ansible Groups."
+---
 
-An Ansible Inventory Group is a logical collection of hosts that share common properties, attributes, and purposes within an Ansible playbook. It allows users to organize the infrastructure into meaningful segments, making it easier to manage and configure multiple hosts simultaneously.
+# Table: ansible_group - Query Ansible Groups using SQL
+
+Ansible is an open-source software provisioning, configuration management, and application-deployment tool. It provides large productivity gains to a wide variety of automation challenges. An Ansible Group is a collection of hosts, which can be managed collectively, rather than individually.
+
+## Table Usage Guide
+
+The `ansible_group` table provides insights into Ansible Groups within Ansible configuration management. As a DevOps engineer, explore group-specific details through this table, including group names, hosts, and associated metadata. Utilize it to uncover information about groups, such as associated hosts, to aid in the management and configuration of Ansible Groups.
 
 ## Examples
 
 ### Query a simple file
-
+Discover the segments that are part of a specific group in an Ansible inventory, gaining insights into the hierarchical relationships and variable configurations. This can aid in understanding the structure and configuration of your Ansible deployments.
 Given the inventory file `/etc/ansible/hosts` with following configuration:
 
 ```bash
@@ -36,6 +45,7 @@ northwest
 
 Query to retrieve the groups:
 
+
 ```sql
 select
   name,
@@ -65,6 +75,7 @@ from
 ```
 
 ### List groups along with its parents and children
+Explore the hierarchical structure within a group to understand its associations. This is useful for identifying the parent-child relationships within a group, which can help in managing or visualizing the group's organization.
 
 ```sql
 select
@@ -94,6 +105,7 @@ from
 ```
 
 ### Find groups with a specific variable key-value pair
+Identify the groups that are associated with a specific server in your network. This can help in managing and organizing your resources effectively.
 
 ```sql
 select
@@ -107,6 +119,7 @@ where
 ```
 
 ### List hosts per group
+Discover the segments that have active hosts within a certain group. This is beneficial for efficiently managing resources and ensuring optimal utilization.
 
 ```sql
 select
@@ -119,6 +132,7 @@ where
 ```
 
 ### List groups with no children
+Explore which Ansible groups do not have any child groups. This can be useful for identifying isolated groups, potentially simplifying your infrastructure management tasks.
 
 ```sql
 select
