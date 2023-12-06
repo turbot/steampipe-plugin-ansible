@@ -16,7 +16,18 @@ The `ansible_playbook` table provides insights into playbooks within Ansible. As
 ### Retrieve all playbooks
 Explore which playbooks are available in your Ansible configuration. This allows you to gain insights into the tasks, variables, and hosts associated with each playbook, and understand their respective paths.
 
-```sql
+```sql+postgres
+select
+  name,
+  hosts,
+  tasks,
+  vars,
+  path
+from
+  ansible_playbook;
+```
+
+```sql+sqlite
 select
   name,
   hosts,
@@ -30,7 +41,20 @@ from
 ### List playbooks targeting specific hosts
 Explore which ansible playbooks are specifically targeting your web servers. This can help you manage and optimize the deployment of updates or changes across your server infrastructure.
 
-```sql
+```sql+postgres
+select
+  name,
+  hosts,
+  tasks,
+  vars,
+  path
+from
+  ansible_playbook
+where
+  hosts = 'web_servers';
+```
+
+```sql+sqlite
 select
   name,
   hosts,
@@ -46,7 +70,7 @@ where
 ### List playbooks that use privilege escalation
 Explore which Ansible playbooks are using privilege escalation. This can be helpful to assess security practices and identify potential areas of risk in your infrastructure setup.
 
-```sql
+```sql+postgres
 select
   name,
   hosts,
@@ -59,10 +83,36 @@ where
   become;
 ```
 
+```sql+sqlite
+select
+  name,
+  hosts,
+  tasks,
+  vars,
+  path
+from
+  ansible_playbook
+where
+  become = 1;
+```
+
 ### List playbooks with no handlers
 Explore which Ansible playbooks lack handlers, providing a way to identify potential areas for adding error or event handling to improve playbook robustness and reliability.
 
-```sql
+```sql+postgres
+select
+  name,
+  hosts,
+  tasks,
+  vars,
+  path
+from
+  ansible_playbook
+where
+  handlers is null;
+```
+
+```sql+sqlite
 select
   name,
   hosts,
@@ -78,7 +128,7 @@ where
 ### List playbooks that use `root` privilege
 Explore which playbooks are utilizing root privileges. This can be beneficial to identify potential security risks and ensure best practices are adhered to.
 
-```sql
+```sql+postgres
 select
   name,
   hosts,
@@ -89,6 +139,23 @@ from
   ansible_playbook
 where
   become
+  and (
+    become_user is null
+    or become_user = 'root'
+  );
+```
+
+```sql+sqlite
+select
+  name,
+  hosts,
+  tasks,
+  vars,
+  path
+from
+  ansible_playbook
+where
+  become = 1
   and (
     become_user is null
     or become_user = 'root'

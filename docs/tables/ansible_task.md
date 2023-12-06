@@ -16,7 +16,7 @@ The `ansible_task` table provides insights into tasks within Ansible. As a DevOp
 ### Retrieve all tasks in a playbook
 Explore which tasks within a playbook require escalated privileges. This can help identify areas where potential security risks may exist, allowing for a more secure configuration of your playbook.
 
-```sql
+```sql+postgres
 select
   name as task_name,
   tags,
@@ -29,10 +29,23 @@ where
   playbook_name = 'Playbook';
 ```
 
+```sql+sqlite
+select
+  name as task_name,
+  tags,
+  become,
+  become_user,
+  path
+from
+  ansible_task
+where
+  playbook_name = 'Playbook';
+```
+
 ### List tasks that use privilege escalation
 Discover the segments that use privilege escalation in Ansible tasks. This is beneficial to identify areas where elevated permissions are granted, allowing for a review of security practices.
 
-```sql
+```sql+postgres
 select
   name as task_name,
   tags,
@@ -45,10 +58,23 @@ where
   become;
 ```
 
+```sql+sqlite
+select
+  name as task_name,
+  tags,
+  become,
+  become_user,
+  path
+from
+  ansible_task
+where
+  become = 1;
+```
+
 ### Lists tasks with a specific tag
 Explore which tasks are associated with a specific tag in Ansible to better manage and organize your automation scripts.
 
-```sql
+```sql+postgres
 select
   name as task_name,
   tags,
@@ -61,10 +87,14 @@ where
   tags ?| array['create_user'];
 ```
 
+```sql+sqlite
+Error: SQLite does not support array functions and the '?' operator used in PostgreSQL for querying JSONB data.
+```
+
 ### Lists tasks with a specific connection type
 Explore which tasks within your Ansible setup are utilizing SSH as their connection type. This can be useful in identifying potential security vulnerabilities or for routine auditing of your network connections.
 
-```sql
+```sql+postgres
 select
   name as task_name,
   tags,
@@ -77,10 +107,23 @@ where
   connection = 'ssh';
 ```
 
+```sql+sqlite
+select
+  name as task_name,
+  tags,
+  become,
+  become_user,
+  path
+from
+  ansible_task
+where
+  connection = 'ssh';
+```
+
 ### List tasks that use `root` privilege
 Identify instances where tasks are using elevated privileges, such as 'root', within Ansible. This can help in assessing security risks and ensuring adherence to best practices.
 
-```sql
+```sql+postgres
 select
   name as task_name,
   tags,
@@ -91,6 +134,23 @@ from
   ansible_task
 where
   become
+  and (
+    become_user is null
+    or become_user = 'root'
+  );
+```
+
+```sql+sqlite
+select
+  name as task_name,
+  tags,
+  become,
+  become_user,
+  path
+from
+  ansible_task
+where
+  become = 1
   and (
     become_user is null
     or become_user = 'root'

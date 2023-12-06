@@ -15,6 +15,7 @@ The `ansible_group` table provides insights into Ansible Groups within Ansible c
 
 ### Query a simple file
 Discover the segments that are part of a specific group in an Ansible inventory, gaining insights into the hierarchical relationships and variable configurations. This can aid in understanding the structure and configuration of your Ansible deployments.
+
 Given the inventory file `/etc/ansible/hosts` with following configuration:
 
 ```bash
@@ -46,7 +47,17 @@ northwest
 Query to retrieve the groups:
 
 
-```sql
+```sql+postgres
+select
+  name,
+  hosts,
+  parents,
+  vars
+from
+  ansible_group;
+```
+
+```sql+sqlite
 select
   name,
   hosts,
@@ -77,7 +88,16 @@ from
 ### List groups along with its parents and children
 Explore the hierarchical structure within a group to understand its associations. This is useful for identifying the parent-child relationships within a group, which can help in managing or visualizing the group's organization.
 
-```sql
+```sql+postgres
+select
+  name,
+  parents,
+  children
+from
+  ansible_group;
+```
+
+```sql+sqlite
 select
   name,
   parents,
@@ -107,7 +127,7 @@ from
 ### Find groups with a specific variable key-value pair
 Identify the groups that are associated with a specific server in your network. This can help in managing and organizing your resources effectively.
 
-```sql
+```sql+postgres
 select
   name,
   parents,
@@ -118,10 +138,31 @@ where
   vars ->> 'some_server' = 'foo.southeast.example.com';
 ```
 
+```sql+sqlite
+select
+  name,
+  parents,
+  vars
+from
+  ansible_group
+where
+  json_extract(vars, '$.some_server') = 'foo.southeast.example.com';
+```
+
 ### List hosts per group
 Discover the segments that have active hosts within a certain group. This is beneficial for efficiently managing resources and ensuring optimal utilization.
 
-```sql
+```sql+postgres
+select
+  name,
+  hosts
+from
+  ansible_group
+where
+  hosts is not null;
+```
+
+```sql+sqlite
 select
   name,
   hosts
@@ -134,7 +175,17 @@ where
 ### List groups with no children
 Explore which Ansible groups do not have any child groups. This can be useful for identifying isolated groups, potentially simplifying your infrastructure management tasks.
 
-```sql
+```sql+postgres
+select
+  name,
+  hosts
+from
+  ansible_group
+where
+  children is null;
+```
+
+```sql+sqlite
 select
   name,
   hosts
