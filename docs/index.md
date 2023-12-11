@@ -8,6 +8,7 @@ short_name: "ansible"
 description: "Steampipe plugin to query configurations from the Ansible playbooks."
 og_description: "Query Ansible playbooks files with SQL! Open source CLI. No DB required."
 og_image: "/images/plugins/turbot/ansible-social-graphic.png"
+engines: ["steampipe", "sqlite", "postgres", "export"]
 ---
 
 # Ansible + Steampipe
