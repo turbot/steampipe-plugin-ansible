@@ -5,8 +5,8 @@ import (
 )
 
 type ansibleConfig struct {
-	InventoryFilePaths []string `hcl:"inventory_file_paths" steampipe:"watch"`
-	PlayBookFilePaths  []string `hcl:"playbook_file_paths" steampipe:"watch"`
+	InventoryFilePaths []string `hcl:"inventory_file_paths,optional" steampipe:"watch"`
+	PlayBookFilePaths  []string `hcl:"playbook_file_paths,optional" steampipe:"watch"`
 }
 
 func ConfigInstance() interface{} {
