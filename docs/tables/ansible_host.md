@@ -1,9 +1,17 @@
-# Table: ansible_host
+---
+title: "Steampipe Table: ansible_host - Query Ansible Hosts using SQL"
+description: "Allows users to query Ansible Hosts, specifically the host details, providing insights into the configuration and status of each host."
+---
 
-Ansible automates tasks on managed nodes or `hosts` in your infrastructure, using a list or group of lists known as inventory. The table `ansible_host` lists all the host defined in the inventory files.
+# Table: ansible_host - Query Ansible Hosts using SQL
 
-**Note:**
+Ansible is an open-source software provisioning, configuration management, and application-deployment tool. It provides large productivity gains to a wide variety of automation challenges. This tool is very simple to use yet powerful enough to automate complex multi-tier IT application environments.
 
+## Table Usage Guide
+
+The `ansible_host` table provides insights into hosts within Ansible. As a DevOps engineer, explore host-specific details through this table, including host names, groups, variables, and facts. Utilize it to uncover information about hosts, such as their configuration, status, and the groups they belong to.
+
+**Important Notes**
 - Even if you do not define any groups in your inventory file, Ansible creates two default groups: `all` and `ungrouped`.
 - The `all` group contains every host. The `ungrouped` group contains all hosts that don’t have another group aside from all.
 - Every host will always belong to at least 2 groups (`all` and `ungrouped` or `all` and some other group).
@@ -11,7 +19,7 @@ Ansible automates tasks on managed nodes or `hosts` in your infrastructure, usin
 ## Examples
 
 ### Query a simple file
-
+Explore which hosts are being used in your network and their respective ports. This can help you manage and monitor your network infrastructure more effectively by identifying where each host is being used.
 Given the inventory file `/etc/ansible/hosts` with following configuration:
 
 ```bash
@@ -42,7 +50,17 @@ northwest
 
 Query to retrieve the hosts:
 
-```sql
+
+```sql+postgres
+select
+  name,
+  port,
+  vars
+from
+  ansible_host;
+```
+
+```sql+sqlite
 select
   name,
   port,
@@ -63,11 +81,20 @@ from
 
 or, if the same host is used in more than one group, you can easily identify the list of groups where it is being used:
 
-```sql
+```sql+postgres
 select
   name,
   port,
   group
+from
+  ansible_host;
+```
+
+```sql+sqlite
+select
+  name,
+  port,
+  "group"
 from
   ansible_host;
 ```
@@ -83,10 +110,11 @@ from
 ```
 
 ### Casting column data for analysis
-
+Identify instances where automatic updates have been turned off in the analytics section of a configuration file. This is useful for ensuring that all systems are set to receive the latest updates and features.
 Text columns can be easily cast to other types:
 
-```sql
+
+```sql+postgres
 select
   section,
   key,
@@ -98,6 +126,20 @@ where
   and section = 'analytics'
   and key = 'check_for_updates'
   and not value::bool;
+```
+
+```sql+sqlite
+select
+  section,
+  key,
+  value
+from
+  ini_key_value
+where
+  path = '/Users/myuser/defaults.ini'
+  and section = 'analytics'
+  and key = 'check_for_updates'
+  and not value;
 ```
 
 ```sh

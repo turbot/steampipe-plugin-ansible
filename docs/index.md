@@ -8,13 +8,14 @@ short_name: "ansible"
 description: "Steampipe plugin to query configurations from the Ansible playbooks."
 og_description: "Query Ansible playbooks files with SQL! Open source CLI. No DB required."
 og_image: "/images/plugins/turbot/ansible-social-graphic.png"
+engines: ["steampipe", "sqlite", "postgres", "export"]
 ---
 
 # Ansible + Steampipe
 
-[Ansible](https://www.ansible.com) offers open-source automation that is simple, flexible, and powerful.
+[Steampipe](https://steampipe.io) is an open-source zero-ETL engine to instantly query cloud APIs using SQL.
 
-[Steampipe](https://steampipe.io) is an open source CLI to instantly query data using SQL.
+[Ansible](https://www.ansible.com) offers open-source automation that is simple, flexible, and powerful.
 
 The Ansible plugin makes it simpler to query the configured Ansible playbook files, and the various tasks defined in it. Apart from scanning the playbook files, the plugin also supports scanning the Ansible inventory files from different sources.
 
@@ -246,8 +247,3 @@ connection "ansible" {
   ]
 }
 ```
-
-## Get involved
-
-- Open source: https://github.com/turbot/steampipe-plugin-ansible
-- Community: [Join #steampipe on Slack →](https://turbot.com/community/join)
