@@ -2,23 +2,11 @@ package ansible
 
 import (
 	"github.com/turbot/steampipe-plugin-sdk/v5/plugin"
-	"github.com/turbot/steampipe-plugin-sdk/v5/plugin/schema"
 )
 
 type ansibleConfig struct {
-	InventoryFilePaths []string `cty:"inventory_file_paths" steampipe:"watch"`
-	PlayBookFilePaths  []string `cty:"playbook_file_paths" steampipe:"watch"`
-}
-
-var ConfigSchema = map[string]*schema.Attribute{
-	"inventory_file_paths": {
-		Type: schema.TypeList,
-		Elem: &schema.Attribute{Type: schema.TypeString},
-	},
-	"playbook_file_paths": {
-		Type: schema.TypeList,
-		Elem: &schema.Attribute{Type: schema.TypeString},
-	},
+	InventoryFilePaths []string `hcl:"inventory_file_paths" steampipe:"watch"`
+	PlayBookFilePaths  []string `hcl:"playbook_file_paths" steampipe:"watch"`
 }
 
 func ConfigInstance() interface{} {
