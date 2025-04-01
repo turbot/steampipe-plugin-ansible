@@ -213,42 +213,42 @@ func tableAnsiblePlaybook(ctx context.Context) *plugin.Table {
 }
 
 type AnsiblePlaybookInfo struct {
-	Become            bool        `cty:"become"`
-	BecomeFlags       string      `cty:"become_flags"`
-	BecomeMethod      string      `cty:"become_method"`
-	BecomeUser        string      `cty:"become_user"`
-	CheckMode         bool        `cty:"check_mode"`
-	Collections       interface{} `cty:"collections"`
-	Debugger          string      `cty:"debugger"`
-	Diff              bool        `cty:"diff"`
-	Environment       interface{} `cty:"environment"`
-	ForceHandlers     bool        `cty:"force_handlers"`
-	GatherFacts       bool        `cty:"gather_facts"`
-	GatherSubset      interface{} `cty:"gether_subset"`
-	Handlers          interface{} `cty:"handlers"`
-	Hosts             string      `cty:"hosts"`
-	IgnoreErrors      bool        `cty:"ignore_errors"`
-	IgnoreUnreachable bool        `cty:"ignore_unreachable"`
-	MaxFailPercentage int         `cty:"max_fail_percentage"`
-	ModuleDefaults    interface{} `cty:"module_defaults"`
-	Name              string      `cty:"name"`
-	NoLog             bool        `cty:"no_log"`
-	Order             string      `cty:"order"`
-	Path              string      `cty:"-"`
-	PostTasks         interface{} `cty:"post_tasks"`
-	PreTasks          interface{} `cty:"pre_tasks"`
-	RemoteUser        string      `cty:"remote_user"`
-	Roles             interface{} `cty:"roles"`
-	RunOnce           bool        `cty:"run_once"`
-	Serial            int         `cty:"serial"`
-	Strategy          string      `cty:"strategy"`
-	Tags              string      `cty:"tags"`
-	Tasks             interface{} `cty:"tasks"`
-	Throttle          int         `cty:"throttle"`
-	Timeout           int         `cty:"timeout"`
-	Vars              interface{} `cty:"vars"`
-	VarsFiles         interface{} `cty:"vars_files"`
-	VarsPrompt        interface{} `cty:"vars_prompt"`
+	Become            bool        `yaml:"become"`
+	BecomeFlags       string      `yaml:"become_flags"`
+	BecomeMethod      string      `yaml:"become_method"`
+	BecomeUser        string      `yaml:"become_user"`
+	CheckMode         bool        `yaml:"check_mode"`
+	Collections       interface{} `yaml:"collections"`
+	Debugger          string      `yaml:"debugger"`
+	Diff              bool        `yaml:"diff"`
+	Environment       interface{} `yaml:"environment"`
+	ForceHandlers     bool        `yaml:"force_handlers"`
+	GatherFacts       bool        `yaml:"gather_facts"`
+	GatherSubset      interface{} `yaml:"gether_subset"`
+	Handlers          interface{} `yaml:"handlers"`
+	Hosts             string      `yaml:"hosts"`
+	IgnoreErrors      bool        `yaml:"ignore_errors"`
+	IgnoreUnreachable bool        `yaml:"ignore_unreachable"`
+	MaxFailPercentage int         `yaml:"max_fail_percentage"`
+	ModuleDefaults    interface{} `yaml:"module_defaults"`
+	Name              string      `yaml:"name"`
+	NoLog             bool        `yaml:"no_log"`
+	Order             string      `yaml:"order"`
+	Path              string      `yaml:"-"`
+	PostTasks         interface{} `yaml:"post_tasks"`
+	PreTasks          interface{} `yaml:"pre_tasks"`
+	RemoteUser        string      `yaml:"remote_user"`
+	Roles             interface{} `yaml:"roles"`
+	RunOnce           bool        `yaml:"run_once"`
+	Serial            int         `yaml:"serial"`
+	Strategy          string      `yaml:"strategy"`
+	Tags              string      `yaml:"tags"`
+	Tasks             interface{} `yaml:"tasks"`
+	Throttle          int         `yaml:"throttle"`
+	Timeout           int         `yaml:"timeout"`
+	Vars              interface{} `yaml:"vars"`
+	VarsFiles         interface{} `yaml:"vars_files"`
+	VarsPrompt        interface{} `yaml:"vars_prompt"`
 }
 
 //// LIST FUNCTION
@@ -271,6 +271,7 @@ func listAnsiblePlaybooks(ctx context.Context, d *plugin.QueryData, h *plugin.Hy
 		plugin.Logger(ctx).Error("ansible_playbook.listAnsiblePlaybooks", "parse_error", err, "path", path)
 		return nil, fmt.Errorf("failed to unmarshal file content %s: %v", path, err)
 	}
+	plugin.Logger(ctx).Error("successfully unmarshalled the file content")
 
 	for _, play := range data {
 		play.Path = path
