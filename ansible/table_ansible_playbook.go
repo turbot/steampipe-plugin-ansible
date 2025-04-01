@@ -212,43 +212,48 @@ func tableAnsiblePlaybook(ctx context.Context) *plugin.Table {
 	}
 }
 
+// We include both `cty` and `yaml` struct tags to support multiple input formats.
+// - `yaml` tags are used to unmarshal Ansible playbook files written in YAML format.
+// - `cty` tags are used to support HCL parsing (e.g., when this struct is used in HCL-based configs).
+// This allows the struct to be reused seamlessly across tools that rely on either YAML or HCL formats,
+// such as Steampipe plugins that may support both Terraform-like configs and YAML playbooks.
 type AnsiblePlaybookInfo struct {
-	Become            bool        `yaml:"become"`
-	BecomeFlags       string      `yaml:"become_flags"`
-	BecomeMethod      string      `yaml:"become_method"`
-	BecomeUser        string      `yaml:"become_user"`
-	CheckMode         bool        `yaml:"check_mode"`
-	Collections       interface{} `yaml:"collections"`
-	Debugger          string      `yaml:"debugger"`
-	Diff              bool        `yaml:"diff"`
-	Environment       interface{} `yaml:"environment"`
-	ForceHandlers     bool        `yaml:"force_handlers"`
-	GatherFacts       bool        `yaml:"gather_facts"`
-	GatherSubset      interface{} `yaml:"gether_subset"`
-	Handlers          interface{} `yaml:"handlers"`
-	Hosts             string      `yaml:"hosts"`
-	IgnoreErrors      bool        `yaml:"ignore_errors"`
-	IgnoreUnreachable bool        `yaml:"ignore_unreachable"`
-	MaxFailPercentage int         `yaml:"max_fail_percentage"`
-	ModuleDefaults    interface{} `yaml:"module_defaults"`
-	Name              string      `yaml:"name"`
-	NoLog             bool        `yaml:"no_log"`
-	Order             string      `yaml:"order"`
-	Path              string      `yaml:"-"`
-	PostTasks         interface{} `yaml:"post_tasks"`
-	PreTasks          interface{} `yaml:"pre_tasks"`
-	RemoteUser        string      `yaml:"remote_user"`
-	Roles             interface{} `yaml:"roles"`
-	RunOnce           bool        `yaml:"run_once"`
-	Serial            int         `yaml:"serial"`
-	Strategy          string      `yaml:"strategy"`
-	Tags              string      `yaml:"tags"`
-	Tasks             interface{} `yaml:"tasks"`
-	Throttle          int         `yaml:"throttle"`
-	Timeout           int         `yaml:"timeout"`
-	Vars              interface{} `yaml:"vars"`
-	VarsFiles         interface{} `yaml:"vars_files"`
-	VarsPrompt        interface{} `yaml:"vars_prompt"`
+	Become            bool        `cty:"become" yaml:"become"`
+	BecomeFlags       string      `cty:"become_flags" yaml:"become_flags"`
+	BecomeMethod      string      `cty:"become_method" yaml:"become_method"`
+	BecomeUser        string      `cty:"become_user" yaml:"become_user"`
+	CheckMode         bool        `cty:"check_mode" yaml:"check_mode"`
+	Collections       interface{} `cty:"collections" yaml:"collections"`
+	Debugger          string      `cty:"debugger" yaml:"debugger"`
+	Diff              bool        `cty:"diff" yaml:"diff"`
+	Environment       interface{} `cty:"environment" yaml:"environment"`
+	ForceHandlers     bool        `cty:"force_handlers" yaml:"force_handlers"`
+	GatherFacts       bool        `cty:"gather_facts" yaml:"gather_facts"`
+	GatherSubset      interface{} `cty:"gether_subset" yaml:"gether_subset"`
+	Handlers          interface{} `cty:"handlers" yaml:"handlers"`
+	Hosts             string      `cty:"hosts" yaml:"hosts"`
+	IgnoreErrors      bool        `cty:"ignore_errors" yaml:"ignore_errors"`
+	IgnoreUnreachable bool        `cty:"ignore_unreachable" yaml:"ignore_unreachable"`
+	MaxFailPercentage int         `cty:"max_fail_percentage" yaml:"max_fail_percentage"`
+	ModuleDefaults    interface{} `cty:"module_defaults" yaml:"module_defaults"`
+	Name              string      `cty:"name" yaml:"name"`
+	NoLog             bool        `cty:"no_log" yaml:"no_log"`
+	Order             string      `cty:"order" yaml:"order"`
+	Path              string      `cty:"-" yaml:"-"`
+	PostTasks         interface{} `cty:"post_tasks" yaml:"post_tasks"`
+	PreTasks          interface{} `cty:"pre_tasks" yaml:"pre_tasks"`
+	RemoteUser        string      `cty:"remote_user" yaml:"remote_user"`
+	Roles             interface{} `cty:"roles" yaml:"roles"`
+	RunOnce           bool        `cty:"run_once" yaml:"run_once"`
+	Serial            int         `cty:"serial" yaml:"serial"`
+	Strategy          string      `cty:"strategy" yaml:"strategy"`
+	Tags              string      `cty:"tags" yaml:"tags"`
+	Tasks             interface{} `cty:"tasks" yaml:"tasks"`
+	Throttle          int         `cty:"throttle" yaml:"throttle"`
+	Timeout           int         `cty:"timeout" yaml:"timeout"`
+	Vars              interface{} `cty:"vars" yaml:"vars"`
+	VarsFiles         interface{} `cty:"vars_files" yaml:"vars_files"`
+	VarsPrompt        interface{} `cty:"vars_prompt" yaml:"vars_prompt"`
 }
 
 //// LIST FUNCTION
