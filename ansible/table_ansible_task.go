@@ -239,53 +239,58 @@ func tableAnsibleTask(ctx context.Context) *plugin.Table {
 	}
 }
 
+// We include both `cty` and `yaml` struct tags to support multiple input formats.
+// - `yaml` tags are used to unmarshal Ansible playbook files written in YAML format.
+// - `cty` tags are used to support HCL parsing (e.g., when this struct is used in HCL-based configs).
+// This allows the struct to be reused seamlessly across tools that rely on either YAML or HCL formats,
+// such as Steampipe plugins that may support both Terraform-like configs and YAML playbooks.
 type AnsiblePlaybookTask struct {
-	Name  string        `cty:"name"`
-	Tasks []AnsibleTask `cty:"tasks"`
+	Name  string        `cty:"name" yaml:"name"`
+	Tasks []AnsibleTask `cty:"tasks" yaml:"tasks"`
 }
 
 type AnsibleTask struct {
-	AnyErrorsFatal    string      `cty:"any_errors_fatal"`
-	Async             int         `cty:"async"`
-	Become            bool        `cty:"become"`
-	BecomeFlags       string      `cty:"become_flags"`
-	BecomeMethod      string      `cty:"become_method"`
-	BecomeUser        string      `cty:"become_user"`
-	ChangedWhen       string      `cty:"changed_when"`
-	CheckMode         bool        `cty:"check_mode"`
-	Collections       interface{} `cty:"collections"`
-	Connection        interface{} `cty:"connection"`
-	Debugger          string      `cty:"debugger"`
-	Delay             int         `cty:"delay"`
-	DelegateFacts     bool        `cty:"delegate_facts"`
-	DelegateTo        string      `cty:"delegate_to"`
-	Diff              bool        `cty:"diff"`
-	FailedWhen        string      `cty:"failed_when"`
-	Group             interface{} `cty:"group"`
-	IgnoreErrors      bool        `cty:"ignore_errors"`
-	IgnoreUnreachable bool        `cty:"ignore_unreachable"`
-	Loop              string      `cty:"loop"`
-	LoopAction        string      `cty:"loop_action"`
-	LoopControl       interface{} `cty:"loop_control"`
-	ModuleDefaults    interface{} `cty:"module_defaults"`
-	Name              string      `cty:"name"`
-	NoLog             bool        `cty:"no_log"`
-	Notify            interface{} `cty:"notify"`
-	Path              string      `cty:"-"`
-	PlaybookName      string      `cty:"-"`
-	Poll              int         `cty:"poll"`
-	Port              int         `cty:"port"`
-	Register          string      `cty:"register"`
-	RemoteUser        string      `cty:"remote_user"`
-	Retries           int         `cty:"retries"`
-	RunOnce           bool        `cty:"run_once"`
-	Tags              []string    `cty:"tags"`
-	Throttle          int         `cty:"throttle"`
-	Timeout           int         `cty:"timeout"`
-	Until             string      `cty:"until"`
-	User              interface{} `cty:"user"`
-	Vars              interface{} `cty:"vars"`
-	When              string      `cty:"when"`
+	AnyErrorsFatal    string      `cty:"any_errors_fatal" yaml:"any_errors_fatal"`
+	Async             int         `cty:"async" yaml:"async"`
+	Become            bool        `cty:"become" yaml:"become"`
+	BecomeFlags       string      `cty:"become_flags" yaml:"become_flags"`
+	BecomeMethod      string      `cty:"become_method" yaml:"become_method"`
+	BecomeUser        string      `cty:"become_user" yaml:"become_user"`
+	ChangedWhen       string      `cty:"changed_when" yaml:"changed_when"`
+	CheckMode         bool        `cty:"check_mode" yaml:"check_mode"`
+	Collections       interface{} `cty:"collections" yaml:"collections"`
+	Connection        interface{} `cty:"connection" yaml:"connection"`
+	Debugger          string      `cty:"debugger" yaml:"debugger"`
+	Delay             int         `cty:"delay" yaml:"delay"`
+	DelegateFacts     bool        `cty:"delegate_facts" yaml:"delegate_facts"`
+	DelegateTo        string      `cty:"delegate_to" yaml:"delegate_to"`
+	Diff              bool        `cty:"diff" yaml:"diff"`
+	FailedWhen        string      `cty:"failed_when" yaml:"failed_when"`
+	Group             interface{} `cty:"group" yaml:"group"`
+	IgnoreErrors      bool        `cty:"ignore_errors" yaml:"ignore_errors"`
+	IgnoreUnreachable bool        `cty:"ignore_unreachable" yaml:"ignore_unreachable"`
+	Loop              string      `cty:"loop" yaml:"loop"`
+	LoopAction        string      `cty:"loop_action" yaml:"loop_action"`
+	LoopControl       interface{} `cty:"loop_control" yaml:"loop_control"`
+	ModuleDefaults    interface{} `cty:"module_defaults" yaml:"module_defaults"`
+	Name              string      `cty:"name" yaml:"name"`
+	NoLog             bool        `cty:"no_log" yaml:"no_log"`
+	Notify            interface{} `cty:"notify" yaml:"notify"`
+	Path              string      `cty:"-" yaml:"-"`
+	PlaybookName      string      `cty:"-" yaml:"-"`
+	Poll              int         `cty:"poll" yaml:"poll"`
+	Port              int         `cty:"port" yaml:"port"`
+	Register          string      `cty:"register" yaml:"register"`
+	RemoteUser        string      `cty:"remote_user" yaml:"remote_user"`
+	Retries           int         `cty:"retries" yaml:"retries"`
+	RunOnce           bool        `cty:"run_once" yaml:"run_once"`
+	Tags              []string    `cty:"tags" yaml:"tags"`
+	Throttle          int         `cty:"throttle" yaml:"throttle"`
+	Timeout           int         `cty:"timeout" yaml:"timeout"`
+	Until             string      `cty:"until" yaml:"until"`
+	User              interface{} `cty:"user" yaml:"user"`
+	Vars              interface{} `cty:"vars" yaml:"vars"`
+	When              string      `cty:"when" yaml:"when"`
 }
 
 //// LIST FUNCTION
